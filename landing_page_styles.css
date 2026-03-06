@@ -1,0 +1,106 @@
+:root {
+    --primary-color: #F6E58D;
+    --secondary-color: #EAB543;
+    --accent-color: #3F3F3F;
+    --background-color: #FFF9E6;
+    --surface-color: #FFFFFF;
+    --text-color: #333333;
+    --oat-background: url('https://www.example.com/oat-background.png') repeat;
+}
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+}
+nav {
+    background: var(--primary-color);
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+}
+nav img {
+    height: 50px;
+}
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+nav a {
+    text-decoration: none;
+    color: var(--accent-color);
+    transition: color 0.3s;
+}
+nav a:hover {
+    color: var(--secondary-color);
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem;
+    background: linear-gradient(to right, #fceabb, #f8b500);
+    background-image: var(--oat-background);
+}
+.hero-text {
+    max-width: 50%;
+}
+.hero-image {
+    max-width: 100%;
+    border-radius: 10px;
+}
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 2rem;
+}
+.feature {
+    background: var(--surface-color);
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.accordion {
+    background: var(--surface-color);
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+footer {
+    display: flex;
+    justify-content: space-between;
+    background: var(--primary-color);
+    padding: 1rem;
+}
+.cta-banner {
+    background: var(--secondary-color);
+    text-align: center;
+    padding: 2rem;
+    border-radius: 10px;
+}
+.cta-button {
+    background: var(--accent-color);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.3s;
+}
+.cta-button:hover {
+    background: var(--secondary-color);
+}
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+    }
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+    header {
+        flex-direction: column;
+        align-items: center;
+    }
+}
