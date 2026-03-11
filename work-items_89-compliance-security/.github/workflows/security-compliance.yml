@@ -1,0 +1,68 @@
+# AUTO-GENERATED — Work Item: 89 | Standards applied: CS-4, CS-5
+# Review before merging. Do not remove this header until reviewed.
+
+name: security-compliance
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+  schedule:
+    # Monthly scan (approx)
+    - cron: '0 3 1 * *'
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  policy-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run policy checks
+        run: bash work-items_89-compliance-security/scripts/policy_check.sh
+
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+
+  dependency-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Node dependency audit (if package-lock.json exists)
+        run: |
+          if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then
+            npm ci
+            npm audit --audit-level=high
+          else
+            echo 'No Node lockfile found; skipping npm audit.'
+          fi
+      - name: Python dependency audit placeholder (if requirements.txt exists)
+        run: |
+          if [ -f requirements.txt ]; then
+            python -m pip install --upgrade pip
+            python -m pip install pip-audit
+            pip-audit
+          else
+            echo 'No requirements.txt found; skipping pip-audit.'
+          fi
+
+  codeql:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript-typescript' ]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+      - uses: github/codeql-action/analyze@v3
